@@ -4,6 +4,7 @@ Digital version of the physical dairy.
 
 User has to answer few questions regarding the day. We will save the answers.
 User can mention all the major events happened in the day.
+
 	1. What went well
 	2. What went wrong
 	3. Lessons learnt
