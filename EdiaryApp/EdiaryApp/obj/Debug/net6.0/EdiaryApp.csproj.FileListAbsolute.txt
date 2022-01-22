@@ -1,0 +1,15 @@
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\bin\Debug\net6.0\EdiaryApp.exe
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\bin\Debug\net6.0\EdiaryApp.deps.json
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\bin\Debug\net6.0\EdiaryApp.runtimeconfig.json
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\bin\Debug\net6.0\EdiaryApp.dll
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\bin\Debug\net6.0\ref\EdiaryApp.dll
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\bin\Debug\net6.0\EdiaryApp.pdb
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.csproj.AssemblyReference.cache
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.AssemblyInfoInputs.cache
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.AssemblyInfo.cs
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.csproj.CoreCompileInputs.cache
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.dll
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\ref\EdiaryApp.dll
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.pdb
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.genruntimeconfig.cache
