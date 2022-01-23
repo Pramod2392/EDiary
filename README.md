@@ -14,3 +14,14 @@ User can mention all the major events happened in the day.
 	
 
 User can retrospect on the days he feel happy, sad. User will be able to understand his behaviour better.
+
+# Required Features
+
+	1. Authentication. (Since the information is personal)
+	2. Save the data in the database.
+	3. It can be a windows application.
+	4. It can be a web application.
+	5. It can also be a mobile application.
+	6. Professional(Career) goals for the year.
+	7. Personal(family) goals for the year.
+	8. Financial management (Credit card  bill reminders)
