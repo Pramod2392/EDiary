@@ -13,6 +13,7 @@ User can mention all the major events happened in the day.
 	6. What all made you sad today
 	
 
+User can get the summary of any day by giving the date.
 User can retrospect on the days he feel happy, sad. User will be able to understand his behaviour better.
 
 # Required Features
