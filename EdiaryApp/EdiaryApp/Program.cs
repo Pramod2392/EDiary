@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Text.RegularExpressions;
 
 Console.WriteLine("Hi Pramod!!");
 Console.WriteLine("Do you wish to get the details of a partiular day? If Yes, press 1, otherwise press 0");
@@ -10,14 +11,31 @@ if(int.TryParse(Console.ReadLine(),out int value))
         string? dateTimeStr = Console.ReadLine();
         if (!string.IsNullOrEmpty(dateTimeStr))
         {
-            string[] splitDate = dateTimeStr.Split(new char[] { ':' });
-            DateOnly date = new DateOnly(Convert.ToInt32(splitDate[2]), Convert.ToInt32(splitDate[1]), Convert.ToInt32(splitDate[0]));
-            string? rootDirectory = ConfigurationManager.AppSettings.Get("EdairyFolder");
-            FileInfo FileInfo = new FileInfo($"{rootDirectory}{DateTime.Now.ToShortDateString()}");
-
-            using (StreamReader reader = new StreamReader(FileInfo.FullName))
+            if (Regex.IsMatch(dateTimeStr, "^\\d{2}:\\d{2}:\\d{4}$"))
             {
-                Console.WriteLine(reader.ReadToEnd()); 
+                string[] splitDate = dateTimeStr.Split(new char[] { ':' });
+                DateOnly date = new DateOnly(Convert.ToInt32(splitDate[2]), Convert.ToInt32(splitDate[1]), Convert.ToInt32(splitDate[0]));
+                string? rootDirectory = ConfigurationManager.AppSettings.Get("EdairyFolder");
+                FileInfo FileInfo = new FileInfo($"{rootDirectory}{DateTime.Now.ToShortDateString()}");
+
+                if (FileInfo.Exists)
+                {
+                    using (StreamReader reader = new StreamReader(FileInfo.FullName))
+                    {
+                        Console.WriteLine(reader.ReadToEnd());
+                    } 
+                } 
+
+                else
+                {
+                    Console.WriteLine("Data does not exist for the given date.");
+                }
+            }
+
+            else
+            {
+                Console.WriteLine($"The entered date: {dateTimeStr} doesn't match the expected dd:mm:yyyy format.");
+                Console.WriteLine("Re-launch the application and enter the correct format.");
             }
         }
     }
