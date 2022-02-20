@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Text.RegularExpressions;
 
-namespace EDiaryApp;
+namespace EdiaryApp;
 
 
 public static class Operation
@@ -78,6 +78,22 @@ public static class Operation
 
         return readFromText;
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="hourMinute"></param>
+    /// <returns></returns>
+    public static DateTime GetDateTimeFromHourMinString(string hourMinute)
+    {
+        int hour = Convert.ToInt32(hourMinute.Split(":")[0]);
+        int minute = Convert.ToInt32(hourMinute.Split(':')[1]);
+        DateTime wakeUpDateTime = new
+            DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,
+                    hour, minute, DateTime.Now.Second);
+        return wakeUpDateTime;
+    }
+
 
 }
 

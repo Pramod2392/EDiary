@@ -1,4 +1,6 @@
-﻿namespace EDiaryApp;
+﻿
+
+namespace EdiaryApp;
 
 static partial class Program
 {
@@ -12,6 +14,14 @@ static partial class Program
             {
                 Console.WriteLine("Enter the date in dd:mm:yyyy format for which you need the summary");
                 string? dateTimeStr = Console.ReadLine();
+
+                if(string.IsNullOrWhiteSpace(dateTimeStr))
+                {
+                    Console.WriteLine("Date is null");
+                    Console.WriteLine("Re-launch the application and enter the correct format");
+                    return;
+                }
+
                 var validationModel = Operation.ValidateDateString(dateTimeStr);
                 if (validationModel.IsValid)
                 {
@@ -45,12 +55,7 @@ static partial class Program
                 {
                     try
                     {
-                        int hour = Convert.ToInt32(wakeUpTime.Split(":")[0]);
-                        int minute = Convert.ToInt32(wakeUpTime.Split(':')[1]);
-                        DateTime wakeUpDateTime = new
-                            DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,
-                                    hour, minute, DateTime.Now.Second);
-
+                        Operation.GetDateTimeFromHourMinString(wakeUpTime);
                         data.Add(item: questionConstants.WakeUpQuestion);
                         data.Add(wakeUpTime);
                     }
@@ -65,21 +70,37 @@ static partial class Program
                 Console.WriteLine(questionConstants.todayPlanQuestion);
                 string? todayPlans = Console.ReadLine();
                 data.Add(item: questionConstants.todayPlanQuestion);
+                if (string.IsNullOrWhiteSpace(todayPlans))
+                {
+                    todayPlans = Constants.NODATA;
+                }                  
                 data.Add(todayPlans);
 
                 Console.WriteLine(questionConstants.howAreYouQuestion);
                 string? howAreYou = Console.ReadLine();
                 data.Add(item: questionConstants.howAreYouQuestion);
+                if (string.IsNullOrWhiteSpace(howAreYou))
+                {
+                    howAreYou = Constants.NODATA;
+                }
                 data.Add(howAreYou);
 
                 Console.WriteLine(questionConstants.positiveQuestion);
                 string? positives = Console.ReadLine();
                 data.Add(item: questionConstants.positiveQuestion);
+                if (string.IsNullOrWhiteSpace(positives))
+                {
+                    positives = Constants.NODATA;
+                }
                 data.Add(positives);
 
                 Console.WriteLine(questionConstants.negativeQuestion);
                 string? negatives = Console.ReadLine();
                 data.Add(item: questionConstants.negativeQuestion);
+                if (string.IsNullOrWhiteSpace(negatives))
+                {
+                    negatives = Constants.NODATA;
+                }
                 data.Add(negatives);
 
                 //FileInfo FileInfo = new FileInfo($"{rootDirectory}{DateTime.Now.ToShortDateString()}");

@@ -25,3 +25,4 @@ C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\Edi
 C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\ref\EdiaryApp.dll
 C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.pdb
 C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.genruntimeconfig.cache
+C:\Users\Pramod\source\repos\GIT\EDiary\EdiaryApp\EdiaryApp\obj\Debug\net6.0\EdiaryApp.csproj.AssemblyReference.cache
