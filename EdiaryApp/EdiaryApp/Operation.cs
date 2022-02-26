@@ -18,7 +18,7 @@ public static class Operation
             dateValidationModel = new DateValidationModel(false, "Entered date is empty");
         }
 
-        else if (!Regex.IsMatch(dateString, "^\\d{2}:\\d{2}:\\d{4}$"))
+        else if (!Regex.IsMatch(dateString, "^\\d{2}-\\d{2}-\\d{4}$"))
         {
             dateValidationModel = new DateValidationModel(false, $"The entered date {dateString} doesn't match the expected format dd:mm:hhhh");
         }
@@ -84,14 +84,12 @@ public static class Operation
     /// </summary>
     /// <param name="hourMinute"></param>
     /// <returns></returns>
-    public static DateTime GetDateTimeFromHourMinString(string hourMinute)
+    public static TimeOnly GetDateTimeFromHourMinString(string hourMinute)
     {
         int hour = Convert.ToInt32(hourMinute.Split(":")[0]);
         int minute = Convert.ToInt32(hourMinute.Split(':')[1]);
-        DateTime wakeUpDateTime = new
-            DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,
-                    hour, minute, DateTime.Now.Second);
-        return wakeUpDateTime;
+        TimeOnly wakeUpTime = new TimeOnly(hour, minute);            
+        return wakeUpTime;
     }
 
 
