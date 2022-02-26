@@ -1,5 +1,8 @@
 ﻿
 
+using DataAccess;
+using DataAccess.Models;
+
 namespace EdiaryApp;
 
 static partial class Program
@@ -12,7 +15,7 @@ static partial class Program
         {
             if (value == 1)
             {
-                Console.WriteLine("Enter the date in dd:mm:yyyy format for which you need the summary");
+                Console.WriteLine("Enter the date in dd-mm-yyyy format for which you need the summary");
                 string? dateTimeStr = Console.ReadLine();
 
                 if(string.IsNullOrWhiteSpace(dateTimeStr))
@@ -25,18 +28,18 @@ static partial class Program
                 var validationModel = Operation.ValidateDateString(dateTimeStr);
                 if (validationModel.IsValid)
                 {
-                    string[] splitDate = dateTimeStr.Split(new char[] { ':' });
-                    DateOnly date = new DateOnly(Convert.ToInt32(splitDate[2]), Convert.ToInt32(splitDate[1]), Convert.ToInt32(splitDate[0]));
-                    var readFromTextResult = Operation.ReadFromText(date);
-                    if (readFromTextResult.IsValid)
-                    {
-                        Console.WriteLine(readFromTextResult.StatusMessage);
-                    }
+                    List<QuestionModel> questions = SqliteDataAccess.GetQuestions();
+                    List<AnswerModel> answers =  SqliteDataAccess.GetAnswerForGivendate(dateTimeStr);
 
-                    else
+                    foreach(AnswerModel answer in answers)
                     {
-                        Console.WriteLine(readFromTextResult.StatusMessage);
-                    }
+                        QuestionModel? question = questions.Where(x => x.Id == answer.questionId).FirstOrDefault();
+                        if(question is not null)
+                        {
+                            Console.WriteLine(question.Question);
+                        }
+                        Console.WriteLine(answer.answer);
+                    }                    
                 }
                 else
                 {
@@ -47,66 +50,23 @@ static partial class Program
 
             else if (value == 0)
             {
-                List<string> data = new List<string>();
-                Console.WriteLine(value: questionConstants.WakeUpQuestion);
-                Console.WriteLine("Format hh:mm");
-                string? wakeUpTime = Console.ReadLine();
-                if (wakeUpTime != null)
+                List<QuestionModel> questions =  SqliteDataAccess.GetQuestions();
+                List<AnswerModel> answerModels = new List<AnswerModel>();
+                Dictionary<QuestionModel, string> data = new Dictionary<QuestionModel,string>();
+                foreach(var question in questions)
                 {
-                    try
+                    Console.WriteLine(question.Question);
+                    string? answer = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(answer))
                     {
-                        Operation.GetDateTimeFromHourMinString(wakeUpTime);
-                        data.Add(item: questionConstants.WakeUpQuestion);
-                        data.Add(wakeUpTime);
+                        answer = Constants.NODATA;
                     }
-                    catch (FormatException exF)
-                    {
-                        Console.WriteLine("Input Hour and minute is not in expected format");
-                        Console.WriteLine(exF.Message);
-                        Console.WriteLine("Re-launch the application and give the correct format");
-                    }
-
+                    answerModels.Add(
+                        new AnswerModel() 
+                        {answer = answer, questionId = question.Id, DateModified = DateTime.Now, reportId = 1});
                 }
-                Console.WriteLine(questionConstants.todayPlanQuestion);
-                string? todayPlans = Console.ReadLine();
-                data.Add(item: questionConstants.todayPlanQuestion);
-                if (string.IsNullOrWhiteSpace(todayPlans))
-                {
-                    todayPlans = Constants.NODATA;
-                }                  
-                data.Add(todayPlans);
 
-                Console.WriteLine(questionConstants.howAreYouQuestion);
-                string? howAreYou = Console.ReadLine();
-                data.Add(item: questionConstants.howAreYouQuestion);
-                if (string.IsNullOrWhiteSpace(howAreYou))
-                {
-                    howAreYou = Constants.NODATA;
-                }
-                data.Add(howAreYou);
-
-                Console.WriteLine(questionConstants.positiveQuestion);
-                string? positives = Console.ReadLine();
-                data.Add(item: questionConstants.positiveQuestion);
-                if (string.IsNullOrWhiteSpace(positives))
-                {
-                    positives = Constants.NODATA;
-                }
-                data.Add(positives);
-
-                Console.WriteLine(questionConstants.negativeQuestion);
-                string? negatives = Console.ReadLine();
-                data.Add(item: questionConstants.negativeQuestion);
-                if (string.IsNullOrWhiteSpace(negatives))
-                {
-                    negatives = Constants.NODATA;
-                }
-                data.Add(negatives);
-
-                //FileInfo FileInfo = new FileInfo($"{rootDirectory}{DateTime.Now.ToShortDateString()}");
-
-                Operation.WriteToText(data);
-
+                SqliteDataAccess.SaveAnswersForADay(answerModels);                
             }
         }
     }
