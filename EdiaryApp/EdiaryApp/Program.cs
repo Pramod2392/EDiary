@@ -2,75 +2,41 @@
 
 using DataAccess;
 using DataAccess.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace EdiaryApp;
 
 static partial class Program
 {
-    public static void Main()
+    public static void Main(string[] args)
     {
-        Console.WriteLine("Hi Pramod, welcome to EDiary!!");
-        Console.WriteLine("Do you wish to get the details of a partiular day? If Yes, press 1, otherwise press 0");
-        if (int.TryParse(Console.ReadLine(), out int value))
+        using IHost host = CreateHostBuilder(args).Build(); 
+        using var scope = host.Services.CreateScope();
+        var services = scope.ServiceProvider;        
+
+        try
         {
-            if (value == 1)
-            {
-                Console.WriteLine("Enter the date in dd-mm-yyyy format for which you need the summary");
-                string? dateTimeStr = Console.ReadLine();
-
-                if(string.IsNullOrWhiteSpace(dateTimeStr))
-                {
-                    Console.WriteLine("Date is null");
-                    Console.WriteLine("Re-launch the application and enter the correct format");
-                    return;
-                }
-
-                var validationModel = Operation.ValidateDateString(dateTimeStr);
-                if (validationModel.IsValid)
-                {
-                    List<QuestionModel> questions = SqliteDataAccess.GetQuestions();
-                    List<AnswerModel> answers =  SqliteDataAccess.GetAnswerForGivendate(dateTimeStr);
-
-                    foreach(AnswerModel answer in answers)
-                    {
-                        QuestionModel? question = questions.Where(x => x.Id == answer.questionId).FirstOrDefault();
-                        if(question is not null)
-                        {
-                            Console.WriteLine(question.Question);
-                        }
-                        Console.WriteLine(answer.answer);
-                    }                    
-                }
-                else
-                {
-                    Console.WriteLine(validationModel.ValidationMessage);
-                    Console.WriteLine("Re-launch the application and enter the correct format.");
-                }
-            }
-
-            else if (value == 0)
-            {
-                List<QuestionModel> questions =  SqliteDataAccess.GetQuestions();
-                List<AnswerModel> answerModels = new List<AnswerModel>();
-                Dictionary<QuestionModel, string> data = new Dictionary<QuestionModel,string>();
-                foreach(var question in questions)
-                {
-                    Console.WriteLine(question.Question);
-                    string? answer = Console.ReadLine();
-                    if (string.IsNullOrWhiteSpace(answer))
-                    {
-                        answer = Constants.NODATA;
-                    }
-                    answerModels.Add(
-                        new AnswerModel() 
-                        {answer = answer, questionId = question.Id, DateModified = DateTime.Now, reportId = 1});
-                }
-
-                SqliteDataAccess.SaveAnswersForADay(answerModels);                
-            }
+            services.GetRequiredService<IApp>().Run();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error has occured: {ex.Message}");
+            Console.ReadLine();
         }
     }
 
+    static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
+            .ConfigureServices((_, services) =>
+            {
+                services.AddTransient<IApp, App>();
+                services.AddTransient<ISqliteDataAccess, SqliteDataAccess>();
+                services.AddTransient<IOperation, Operation>();
+                services.AddTransient<IAnswerModel, AnswerModel>();
+            });         
+    }
 }
 
 

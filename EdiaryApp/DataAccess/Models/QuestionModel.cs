@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public class QuestionModel
+    public class QuestionModel : IQuestionModel
     {
         public int Id { get; set; }
-        public string Question { get; set; } = String.Empty;  
+        public string Question { get; set; } = String.Empty;
     }
 }

@@ -10,28 +10,28 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public static class SqliteDataAccess
-    {        
+    public class SqliteDataAccess : ISqliteDataAccess
+    {
         private static string GetConnectionString(string name = "EdiarySqlite")
         {
-            string connString =  ConfigurationManager.ConnectionStrings[name].ToString();
+            string connString = ConfigurationManager.ConnectionStrings[name].ToString();
             return connString;
         }
 
-        public static List<QuestionModel> GetQuestions()
+        public List<IQuestionModel> GetQuestions()
         {
             try
             {
                 using (SqliteConnection conn = new SqliteConnection(GetConnectionString()))
                 {
                     var questions = conn.Query<QuestionModel>("SELECT * FROM Questions");
-                    return questions.ToList<QuestionModel>();
+                    return questions.ToList<IQuestionModel>();
                 }
             }
             catch (Exception ex)
             {
-                return new List<QuestionModel>();
-                
+                return new List<IQuestionModel>();
+
             }
         }
 
@@ -39,7 +39,7 @@ namespace DataAccess
         /// 
         /// </summary>
         /// <param name="answers"></param>
-        public static void SaveAnswersForADay(List<AnswerModel> answers)
+        public void SaveAnswersForADay(List<IAnswerModel> answers)
         {
             //Save Data in a report table.
             //Save Data in answers table as a transaction.
@@ -47,13 +47,13 @@ namespace DataAccess
             int CRUDAction;
             try
             {
-               Tuple<int,int> tuple =  GetReportId();
+                Tuple<int, int> tuple = GetReportId();
                 reportId = tuple.Item1;
                 CRUDAction = tuple.Item2;
 
                 using (SqliteConnection conn = new SqliteConnection(GetConnectionString()))
                 {
-                    foreach (AnswerModel answer in answers)
+                    foreach (IAnswerModel answer in answers)
                     {
                         if (CRUDAction.Equals((int)ActionEnum.CRUD.Insert))
                         {
@@ -66,7 +66,7 @@ namespace DataAccess
                                 new { answer = answer.answer, reportId = reportId, questionId = answer.questionId });
                         }
 
-                    } 
+                    }
                 }
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace DataAccess
         /// Get the reportId.
         /// </summary>
         /// <returns>Tuple reportId,CRUDAction</returns>
-        private static Tuple<int,int> GetReportId()
+        private static Tuple<int, int> GetReportId()
         {
             int CRUDAction;
             int reportId;
@@ -100,9 +100,9 @@ namespace DataAccess
                 }
 
                 reportId = conn.Query<int>("SELECT Id FROM Reports where ReportDate = (@reportDate) ",
-                    new { reportDate = DateTime.Now.ToShortDateString() }).FirstOrDefault();                
+                    new { reportDate = DateTime.Now.ToShortDateString() }).FirstOrDefault();
 
-                return new Tuple<int, int>(reportId,CRUDAction);    
+                return new Tuple<int, int>(reportId, CRUDAction);
             }
         }
 
@@ -116,19 +116,19 @@ namespace DataAccess
             using (SqliteConnection conn = new SqliteConnection(GetConnectionString()))
             {
                 int id = conn.Query<int>("SELECT Id from Reports where ReportDate = (@ReportDate)",
-                    new { ReportDate = date }).FirstOrDefault();                                
+                    new { ReportDate = date }).FirstOrDefault();
 
                 return id;
             }
         }
 
-        public static List<AnswerModel> GetAnswerForGivendate(string date)
+        public List<AnswerModel> GetAnswerForGivendate(string date)
         {
             List<AnswerModel> output;
             int reportId = GetReportIdForGivenDate(date);
             using (SqliteConnection conn = new SqliteConnection(GetConnectionString()))
-            {                
-                output = conn.Query<AnswerModel>("SELECT * FROM Answers where ReportId = (@reportId)", new {@reportId = reportId}).ToList();
+            {
+                output = conn.Query<AnswerModel>("SELECT * FROM Answers where ReportId = (@reportId)", new { @reportId = reportId }).ToList();
             }
 
             return output;

@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 namespace EdiaryApp;
 
 
-public static class Operation
+public class Operation : IOperation
 {
     /// <summary>
     /// 
     /// </summary>
-    public static DateValidationModel ValidateDateString(string dateString)
+    public DateValidationModel ValidateDateString(string dateString)
     {
         DateValidationModel dateValidationModel;
 
@@ -32,67 +32,18 @@ public static class Operation
     }
 
 
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static void WriteToText(List<string> dataToText)
-    {
-        string? rootDirectory = ConfigurationManager.AppSettings.Get("EdairyFolder");
-        FileInfo FileInfo = new FileInfo($"{rootDirectory}{DateTime.Now.ToShortDateString()}");
-        if (!string.IsNullOrWhiteSpace(rootDirectory))
-        {
-            using (StreamWriter sw = new StreamWriter(FileInfo.FullName))
-            {
-                foreach (string data in dataToText)
-                {
-                    sw.WriteLine(data);
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static ReadFromTextModel ReadFromText(DateOnly dateString)
-    {
-        string? rootDirectory = ConfigurationManager.AppSettings.Get("EdairyFolder");
-        FileInfo FileInfo = new FileInfo($"{rootDirectory}{dateString.ToShortDateString()}");
-        ReadFromTextModel readFromText;
-
-        if (FileInfo.Exists)
-        {
-            using (StreamReader reader = new StreamReader(FileInfo.FullName))
-            {
-                readFromText = new ReadFromTextModel(true, reader.ReadToEnd());
-
-            }
-        }
-
-        else
-        {
-            readFromText = new ReadFromTextModel(false, "Data does not exist for the given date.");
-        }
-
-        return readFromText;
-    }
-
     /// <summary>
     /// 
     /// </summary>
     /// <param name="hourMinute"></param>
     /// <returns></returns>
-    public static TimeOnly GetDateTimeFromHourMinString(string hourMinute)
+    public TimeOnly GetDateTimeFromHourMinString(string hourMinute)
     {
         int hour = Convert.ToInt32(hourMinute.Split(":")[0]);
         int minute = Convert.ToInt32(hourMinute.Split(':')[1]);
-        TimeOnly wakeUpTime = new TimeOnly(hour, minute);            
+        TimeOnly wakeUpTime = new TimeOnly(hour, minute);
         return wakeUpTime;
     }
-
-
 }
 
 
