@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public class AnswerModel
+    public class AnswerModel : IAnswerModel
     {
         public string answer { get; set; } = string.Empty;
 
@@ -18,13 +18,13 @@ namespace DataAccess.Models
 
         public DateTime DateModified
         {
-            get 
-            { 
-                return _dateModified; 
+            get
+            {
+                return _dateModified;
             }
             set
-            { 
-                _dateModified = value; 
+            {
+                _dateModified = value;
             }
         }
 
